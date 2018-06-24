@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">PengErVideo</string>
+    <string name="yph">月排行</string>
+    <string name="nph">年排行</string>
+    <string name="rph">日排行</string>
+</resources>

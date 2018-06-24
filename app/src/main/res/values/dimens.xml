@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bt_w_bq">55dp</dimen>
+    <dimen name="bt_h_bq">20dp</dimen>
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+<LinearLayout
+    android:background="@color/black"
+    android:orientation="horizontal"
+    android:id="@+id/ll_biaoqian"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<Button
+    android:textSize="11sp"
+    android:text="@string/rph"
+    android:textColor="@color/white"
+    android:layout_margin="5dp"
+    android:background="@drawable/bg_bt_biaoqian"
+    android:id="@+id/bt_day"
+    android:layout_width="@dimen/bt_w_bq"
+    android:layout_height="@dimen/bt_h_bq" />
+    <Button
+        android:textSize="11sp"
+        android:text="@string/yph"
+        android:textColor="@color/white"
+        android:layout_margin="5dp"
+        android:background="@drawable/bg_bt_biaoqian"
+        android:id="@+id/bt_month"
+        android:layout_width="@dimen/bt_w_bq"
+        android:layout_height="@dimen/bt_h_bq" />
+    <Button
+        android:textSize="11sp"
+        android:text="@string/nph"
+        android:textColor="@color/white"
+        android:layout_margin="5dp"
+        android:background="@drawable/bg_bt_biaoqian"
+        android:id="@+id/bt_year"
+        android:layout_width="@dimen/bt_w_bq"
+        android:layout_height="@dimen/bt_h_bq" />
+</LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_rmqdorzxyp"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>
