@@ -2,13 +2,11 @@ package com.example.pengervideo.activity;
 
 
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -21,10 +19,24 @@ import com.example.pengervideo.fragment.SearchFragment;
 import com.example.pengervideo.fragment.XiaoVideoFragment;
 import com.example.pengervideo.http.Api;
 import com.example.pengervideo.manager.MyOkhttpManager;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.Payload;
+import com.nimbusds.jose.crypto.MACSigner;
 import com.tsy.sdk.myokhttp.MyOkHttp;
 
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void init(){
+        shitJWT();
         String basic=Credentials.basic("AUINI4ALS", "{\"alg\":\"HS256\",\"typ\":\"JWT\"}{\"man\":\"samsung\",\"brand\":\"samsung\",\"systemName\":\"Android\",\"systemVersion\":\"5.1.1\",\"unique\":\"6026040105942872\",\"iat\":1529820536,\"exp\":1529856536}");
         Log.e("",basic);
         initBNB();
@@ -178,5 +191,59 @@ public class MainActivity extends AppCompatActivity {
         if (xiaoVideoFragment != null) {
             transaction.hide(xiaoVideoFragment);
         }
+    }
+
+    private void shitJWT(){
+        Map<String,Object> map= new HashMap<>();
+        map.put("man","samsung");
+        map.put("brand","samsung");
+        map.put("systemName","Android");
+        map.put("systemVersion","5.1.1");
+        map.put("unique","6026040105942872");
+        map.put("iat","1529820536");
+        map.put("exp","1529856536");
+        try {
+            creatToken(map);
+            Log.e("aaaaaa------",creatToken(map));
+        } catch (JOSEException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 1.创建一个32-byte的密匙
+     */
+
+    private static final byte[] secret = "avbobo".getBytes();
+
+
+    //生成一个token
+    public static String creatToken(Map<String,Object> payloadMap) throws JOSEException {
+
+        //3.先建立一个头部Header
+        /**
+         * JWSHeader参数：1.加密算法法则,2.类型，3.。。。。。。。
+         * 一般只需要传入加密算法法则就可以。
+         * 这里则采用HS256
+         *
+         * JWSAlgorithm类里面有所有的加密算法法则，直接调用。
+         */
+        JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
+
+        //建立一个载荷Payload
+        Payload payload = new Payload(String.valueOf(new JSONObject(payloadMap)));
+
+        //将头部和载荷结合在一起
+        JWSObject jwsObject = new JWSObject(jwsHeader, payload);
+
+        //建立一个密匙
+
+        JWSSigner jwsSigner = new MACSigner(secret);
+
+        //签名
+        jwsObject.sign(jwsSigner);
+
+        //生成token
+        return jwsObject.serialize();
     }
 }
